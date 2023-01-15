@@ -9,8 +9,8 @@ export const filterSlice = createSlice({
     setFilter(state, action) {
       return (state = action.payload);
     },
-    updateFilter(state, action) {
-      return (state = action.payload);
+    updateFilter(state) {
+      return (state = '');
     },
   },
 });

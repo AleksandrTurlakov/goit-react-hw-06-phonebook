@@ -8,6 +8,7 @@ import {
 } from './Contacts.styled';
 import { useDispatch, useSelector } from 'react-redux';
 import { deleteContact } from '../../redux/contactsSlice';
+import { updateFilter } from '../../redux/filterSlice';
 
 export const Contacts = () => {
   const dispatch = useDispatch();
@@ -30,7 +31,14 @@ export const Contacts = () => {
           <ContactName>
             {name}: {number}
           </ContactName>
-          <Button onClick={() => dispatch(deleteContact(id))}>Delete</Button>
+          <Button
+            onClick={() => {
+              dispatch(deleteContact(id));
+              dispatch(updateFilter(''));
+            }}
+          >
+            Delete
+          </Button>
         </ContactsItem>
       ))}
     </ContactsList>
