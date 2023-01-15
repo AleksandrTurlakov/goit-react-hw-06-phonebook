@@ -3,12 +3,15 @@ import { Form } from './Form/Form';
 import { Contacts } from './Contacts/Contacts';
 import { Filter } from './Filter/Filter';
 import { GlobalStyle } from './GlobalStyle/GlobalStyle';
-import { nanoid } from 'nanoid';
-import { useSelector } from 'react-redux';
+// import { nanoid } from 'nanoid';
+import { useSelector, useDispatch } from 'react-redux';
+import { addContact } from '../redux/contactsSlice';
 
 export const App = () => {
-  const state = useSelector(state => state);
-  console.log(state);
+  const dispatch = useDispatch();
+  const contacts = useSelector(state => state.contacts);
+  const filter = useSelector(state => state.filter);
+  console.log(contacts);
 
   // const [contacts, setContacts] = useState(() => {
   //   const savedContacts = localStorage.getItem('contacts');
@@ -25,18 +28,18 @@ export const App = () => {
   // });
   // const [filter, setFilter] = useState('');
 
-  const formSubmitHandler = ({ name, number }) => {
-    const newContact = { name, id: nanoid(), number };
-    if (
-      contacts.find(
-        contact => contact.name.toLowerCase() === newContact.name.toLowerCase()
-      )
-    ) {
-      alert(`${newContact.name} is already in contact`);
-    } else {
-      setContacts([newContact, ...contacts]);
-    }
-  };
+  // const formSubmitHandler = ({ name, number }) => {
+  //   const newContact = { name, id: nanoid(), number };
+  //   if (
+  //     contacts.find(
+  //       contact => contact.name.toLowerCase() === newContact.name.toLowerCase()
+  //     )
+  //   ) {
+  //     alert(`${newContact.name} is already in contact`);
+  //   } else {
+  //     setContacts([newContact, ...contacts]);
+  //   }
+  // };
 
   const changeFilter = evt => {
     setFilter(evt.currentTarget.value);
@@ -63,7 +66,7 @@ export const App = () => {
     <>
       <h1>Phonebook</h1>
       <GlobalStyle />
-      <Form onSubmit={formSubmitHandler} />
+      <Form onSubmit={() => dispatch(addContact())} />
       <h2>Contacts</h2>
       <Filter value={filter} onChange={changeFilter} />
       <Contacts contacts={filterContacts} onDeleleteContact={deleteContact} />
