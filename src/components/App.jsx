@@ -1,18 +1,13 @@
-import { useEffect } from 'react';
+// import { useEffect } from 'react';
 import { Form } from './Form/Form';
 import { Contacts } from './Contacts/Contacts';
 import { Filter } from './Filter/Filter';
 import { GlobalStyle } from './GlobalStyle/GlobalStyle';
-// import { nanoid } from 'nanoid';
-import { useSelector, useDispatch } from 'react-redux';
-import { addContact } from '../redux/contactsSlice';
+import { useSelector } from 'react-redux';
 
 export const App = () => {
-  const dispatch = useDispatch();
-  const contacts = useSelector(state => state.contacts);
-  const filter = useSelector(state => state.filter);
-  console.log(contacts);
-
+  const contacts = useSelector(state => state.contacts.contacts);
+  // console.log(contacts);
   // const [contacts, setContacts] = useState(() => {
   //   const savedContacts = localStorage.getItem('contacts');
   //   if (savedContacts !== null) {
@@ -28,48 +23,22 @@ export const App = () => {
   // });
   // const [filter, setFilter] = useState('');
 
-  // const formSubmitHandler = ({ name, number }) => {
-  //   const newContact = { name, id: nanoid(), number };
-  //   if (
-  //     contacts.find(
-  //       contact => contact.name.toLowerCase() === newContact.name.toLowerCase()
-  //     )
-  //   ) {
-  //     alert(`${newContact.name} is already in contact`);
-  //   } else {
-  //     setContacts([newContact, ...contacts]);
-  //   }
-  // };
+  // useEffect(() => {
+  //   localStorage.setItem('contacts', JSON.stringify(contacts));
+  // }, [contacts]);
 
-  const changeFilter = evt => {
-    setFilter(evt.currentTarget.value);
-  };
-
-  const getFilterContacts = () => {
-    const normalizedFilter = filter.toLowerCase();
-    return contacts.filter(contact =>
-      contact.name.toLowerCase().includes(normalizedFilter)
-    );
-  };
-
-  const deleteContact = contactId => {
-    setContacts(contacts.filter(contact => contact.id !== contactId));
-    setFilter('');
-  };
-
-  useEffect(() => {
-    localStorage.setItem('contacts', JSON.stringify(contacts));
-  }, [contacts]);
-
-  const filterContacts = getFilterContacts();
   return (
     <>
       <h1>Phonebook</h1>
       <GlobalStyle />
-      <Form onSubmit={() => dispatch(addContact())} />
+      <Form />
       <h2>Contacts</h2>
-      <Filter value={filter} onChange={changeFilter} />
-      <Contacts contacts={filterContacts} onDeleleteContact={deleteContact} />
+      <Filter />
+      {contacts.length === 0 ? (
+        <h2>You don't have saved contacts</h2>
+      ) : (
+        <Contacts />
+      )}
     </>
   );
 };
